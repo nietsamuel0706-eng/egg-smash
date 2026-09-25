@@ -1,0 +1,140 @@
+/* ============================================================
+   EGG SMASHER — shop grid, cards, rarity
+   ============================================================ */
+#shop,#stats{min-height:60vh}
+.shop-head{
+  display:flex;align-items:center;gap:clamp(14px,1.2vw,24px);
+  margin-bottom:clamp(12px,1vw,22px);flex-wrap:wrap;
+}
+.shop-head h2{font-size:clamp(22px,1.8vw,40px);letter-spacing:clamp(4px,.4vw,8px);margin-right:auto}
+.shop-bal{display:flex;align-items:center;gap:7px;font-variant-numeric:tabular-nums}
+.shop-bal{font-size:clamp(14px,1.1vw,22px)}
+.shop-bal b{min-width:3ch}
+.shop-bal .coin-ico,.shop-bal .shard-ico{width:16px;height:16px}
+
+.shop-cats{display:flex;gap:clamp(7px,.6vw,12px);flex-wrap:wrap;margin-bottom:clamp(14px,1.1vw,24px)}
+.cat{
+  font:inherit;font-size:11.5px;font-weight:700;letter-spacing:1.4px;
+  color:var(--dim);background:#120e1d;border:1px solid var(--line);
+  border-radius:999px;
+  padding:clamp(8px,.7vw,15px) clamp(15px,1.3vw,30px);
+  font-size:clamp(11.5px,.85vw,18px);cursor:pointer;
+  transition:color .18s,background .18s,transform .12s,border-color .18s;
+}
+.cat:hover{color:#fff;transform:translateY(-2px)}
+.cat.active{color:#fff;border-color:var(--shop);background:linear-gradient(180deg,#3a2340,#2a1a3c);box-shadow:0 0 16px rgba(255,122,224,.2)}
+
+.shop-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(220px,17vw,340px),1fr));
+  gap:clamp(12px,1vw,22px);
+}
+
+.card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#221a33,#171021);
+  border:1px solid var(--line);border-radius:clamp(16px,1.2vw,24px);
+  padding:clamp(12px,1vw,22px);
+  display:flex;flex-direction:column;gap:clamp(10px,.8vw,18px);
+  transition:transform .18s cubic-bezier(.2,.9,.3,1.3),box-shadow .2s,border-color .2s;
+  animation:cardIn .34s cubic-bezier(.2,.9,.3,1.3) backwards;
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 14px 30px rgba(0,0,0,.5);border-color:#4a3a68}
+.card.locked{filter:saturate(.5) brightness(.8)}
+.card.owned{border-color:var(--good);box-shadow:0 0 0 1px rgba(92,224,138,.18) inset}
+.card.equipped{border-color:var(--yolk);box-shadow:0 0 22px rgba(255,201,60,.25)}
+
+/* rarity shine */
+.card::before{
+  content:"";position:absolute;top:-50%;left:-30%;width:30%;height:200%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+  transform:rotate(20deg);pointer-events:none;left:-60%;
+  transition:left .5s ease;
+}
+.card:hover::before{left:130%}
+
+.card-top{display:flex;gap:clamp(11px,.9vw,18px);align-items:flex-start}
+.card-art{
+  width:clamp(60px,4.4vw,104px);height:clamp(74px,5.4vw,128px);
+  flex:0 0 auto;border-radius:clamp(12px,.9vw,18px);
+  background:#0e0a18;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+}
+.card-art canvas{width:100%;height:100%;display:block}
+.card-name{font-size:clamp(13.5px,1.05vw,21px);font-weight:700;line-height:1.25}
+.card-desc{font-size:clamp(10.5px,.78vw,15px);color:var(--dim);margin-top:3px;line-height:1.45}
+.card-tier{
+  display:inline-block;margin-top:6px;font-size:clamp(8.5px,.62vw,12px);
+  letter-spacing:1.6px;font-weight:700;
+  padding:2px clamp(7px,.5vw,11px);border-radius:99px;border:1px solid currentColor;
+}
+.t-common{color:#9fb0c9} .t-rare{color:#5fb0ff} .t-epic{color:#c47bff}
+.t-legend{color:var(--yolk)} .t-mythic{color:#ff6b8a} .t-ultra{color:#7bffd4}
+
+.card-stats{display:flex;flex-direction:column;gap:4px;font-size:clamp(10.5px,.78vw,15px);color:var(--dim)}
+.card-stats div{display:flex;justify-content:space-between;gap:8px}
+.card-stats b{color:#fff;font-variant-numeric:tabular-nums}
+
+.card-foot{margin-top:auto;display:flex;align-items:center;gap:8px}
+.price{display:flex;align-items:center;gap:5px;font-weight:700;
+  font-size:clamp(13px,1vw,20px);font-variant-numeric:tabular-nums}
+.price.no{color:var(--bad)}
+.card-btn{
+  margin-left:auto;font:inherit;font-size:11px;font-weight:700;letter-spacing:1.2px;
+  padding:clamp(8px,.6vw,14px) clamp(14px,1vw,24px);
+  border-radius:clamp(9px,.7vw,14px);cursor:pointer;color:#2a1c02;
+  font-size:clamp(11px,.8vw,16px);
+  background:linear-gradient(180deg,#ffe9a8,var(--yolk));border:1px solid #ffe9a8;
+  transition:transform .12s,filter .2s;
+}
+.card-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.card-btn:active{transform:scale(.94)}
+.card-btn.equipped-btn{background:#241a33;color:var(--yolk);border-color:#4a3a68;cursor:default}
+.card-btn.ghost-btn{background:#241a33;color:var(--txt);border-color:#3a2d52}
+.card-btn[disabled]{filter:grayscale(.8) brightness(.6);cursor:not-allowed;transform:none}
+
+.lvl-pips{display:flex;gap:3px;margin-top:2px}
+.pip{width:100%;height:5px;border-radius:99px;background:#2b2140;flex:1}
+.pip.on{background:linear-gradient(90deg,var(--yolk),#ff8f4a);box-shadow:0 0 6px rgba(255,201,60,.5)}
+
+/* boost cards get a timer ring */
+.card.boost-card .card-art::after{
+  content:"";position:absolute;inset:0;
+  background:conic-gradient(var(--good) var(--p,0%),transparent 0);
+  opacity:.28;
+}
+
+/* stats panel */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(190px,14vw,300px),1fr));gap:clamp(10px,.8vw,18px)}
+.stat-box{
+  background:#150f22;border:1px solid var(--line);
+  border-radius:clamp(12px,.9vw,18px);padding:clamp(11px,.9vw,20px) clamp(13px,1vw,22px);
+  animation:cardIn .3s ease backwards;
+}
+.stat-box label{display:block;font-size:clamp(9px,.68vw,13px);letter-spacing:1.6px;color:var(--dim);margin-bottom:4px}
+.stat-box b{font-size:clamp(18px,1.4vw,30px);font-variant-numeric:tabular-nums;color:#fff}
+.stat-box.hi b{color:var(--yolk)}
+.stats-reset{margin-top:18px;display:flex;justify-content:flex-end}
+
+/* ---------------- egg codex ---------------- */
+.codex-title{font-size:clamp(13px,1vw,22px);letter-spacing:3px;color:var(--dim);margin:22px 0 10px}
+.codex{display:flex;flex-direction:column;gap:5px}
+.codex-row{
+  display:grid;grid-template-columns:clamp(10px,.7vw,16px) 1fr clamp(78px,6vw,130px) clamp(64px,5vw,110px) clamp(54px,4vw,90px) clamp(96px,7vw,160px);
+  align-items:center;gap:clamp(10px,.8vw,20px);
+  background:#150f22;border:1px solid var(--line);border-radius:clamp(10px,.7vw,16px);
+  padding:clamp(8px,.6vw,16px) clamp(12px,.9vw,22px);
+  font-size:clamp(11.5px,.85vw,18px);color:#6d5f8a;
+  animation:cardIn .3s ease backwards;
+}
+.codex-row.got{color:var(--txt);border-color:#3a2d52;background:#1c1530}
+.codex-row i{width:10px;height:10px;border-radius:50%;display:block;box-shadow:0 0 8px currentColor}
+.cx-name{font-weight:700}
+.cx-rarity{font-size:clamp(9px,.65vw,13px);letter-spacing:1.4px;font-weight:700}
+.cx-val{font-variant-numeric:tabular-nums;color:var(--coin);font-weight:700}
+.cx-hp{font-variant-numeric:tabular-nums}
+.cx-unlock{text-align:right;font-size:clamp(9.5px,.7vw,14px);letter-spacing:1.2px}
+.codex-row.got .cx-unlock{color:var(--good)}
+@media (max-width:720px){
+  .codex-row{grid-template-columns:10px 1fr 70px;row-gap:2px}
+  .cx-hp,.cx-unlock{display:none}
+}

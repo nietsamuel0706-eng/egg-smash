@@ -1,0 +1,79 @@
+/* ============================================================
+   EGG SMASHER — HUD chips, combo meter, boosts
+   ============================================================ */
+#stage{position:relative}
+
+.hud-left{gap:clamp(6px,.6vw,12px)}
+.hud-right{gap:clamp(8px,.7vw,14px);width:clamp(150px,15vw,290px)}
+
+.hud-left{
+  position:absolute;left:clamp(10px,1vw,20px);top:clamp(10px,1vw,20px);z-index:3;
+  display:flex;flex-direction:column;gap:clamp(6px,.6vw,12px);pointer-events:none;
+}
+.stat-chip{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(12,9,20,.7);border:1px solid var(--line);
+  border-radius:clamp(9px,.7vw,14px);
+  padding:clamp(5px,.45vw,9px) clamp(9px,.8vw,16px);
+  min-width:clamp(112px,9vw,190px);
+  backdrop-filter:blur(6px);
+  transition:border-color .25s,transform .12s;
+}
+.stat-chip label{font-size:clamp(9px,.7vw,14px);letter-spacing:1.5px;color:var(--dim);width:clamp(38px,3vw,60px)}
+.stat-chip b{font-size:clamp(13px,1vw,20px);font-variant-numeric:tabular-nums;margin-left:auto;color:#fff}
+.stat-chip.flash{animation:chipFlash .55s ease}
+.stat-chip.crit b{color:#ff9ad5}
+.stat-chip.luck b{color:var(--shard)}
+.stat-chip.power b{color:var(--yolk)}
+.stat-chip.value b{color:var(--good)}
+
+.hud-right{
+  position:absolute;right:clamp(10px,1vw,20px);top:clamp(10px,1vw,20px);z-index:3;
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  pointer-events:none;
+}
+.combo-wrap{
+  background:rgba(12,9,20,.7);border:1px solid var(--line);
+  border-radius:clamp(11px,.8vw,16px);
+  padding:clamp(7px,.55vw,11px) clamp(10px,.8vw,16px);width:100%;
+  backdrop-filter:blur(6px);opacity:.35;transition:opacity .25s,border-color .25s,transform .18s;
+}
+.combo-wrap.live{opacity:1;border-color:var(--yolk);box-shadow:0 0 18px rgba(255,201,60,.22)}
+.combo-wrap.bump{animation:comboBump .3s cubic-bezier(.2,.9,.3,1.6)}
+.combo-bar{height:7px;background:#241c36;border-radius:99px;overflow:hidden}
+.combo-bar i{
+  display:block;height:100%;width:0%;border-radius:99px;
+  background:linear-gradient(90deg,var(--yolk),#ff8f4a);
+  transition:width .1s linear;
+}
+.combo-wrap.hot .combo-bar i{background:linear-gradient(90deg,#ff8f4a,#ff4d6d)}
+.combo-label{
+  margin-top:4px;font-size:clamp(9.5px,.7vw,14px);letter-spacing:2px;color:var(--dim);
+  display:flex;justify-content:space-between;
+}
+.combo-wrap.live .combo-label{color:var(--yolk)}
+.combo-wrap.hot .combo-label{color:#ff6b8a}
+
+.boost-strip{display:flex;flex-direction:column;gap:5px;width:100%}
+.boost{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(12,9,20,.7);border:1px solid var(--line);
+  border-radius:clamp(9px,.7vw,14px);
+  padding:clamp(5px,.45vw,9px) clamp(8px,.7vw,14px);
+  font-size:clamp(10.5px,.78vw,16px);
+  backdrop-filter:blur(6px);animation:slideInRight .3s ease;
+  position:relative;overflow:hidden;
+}
+.boost b{color:var(--yolk);font-variant-numeric:tabular-nums;margin-left:auto}
+.boost i.boost-fill{
+  position:absolute;left:0;bottom:0;height:2px;width:100%;
+  background:var(--good);transform-origin:left;
+}
+.boost.expiring{animation:boostFlash .5s ease infinite}
+
+@media (max-width:720px){
+  .stat-chip{min-width:0;padding:4px 7px;gap:5px}
+  .stat-chip label{width:auto;font-size:8px}
+}
+
+.purse-val{font-variant-numeric:tabular-nums;letter-spacing:.5px;min-width:2ch;text-align:right}

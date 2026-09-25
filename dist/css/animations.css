@@ -1,0 +1,175 @@
+/* ============================================================
+   EGG SMASHER — every keyframe animation in the game
+   (canvas-side animation lives in js/fx/*, this is the DOM side)
+   ============================================================ */
+
+/* ---------- entrances ---------- */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes panelIn{
+  from{opacity:0;transform:translateY(12px) scale(.985)}
+  to{opacity:1;transform:none}
+}
+@keyframes cardPop{
+  0%{opacity:0;transform:scale(.8) translateY(24px)}
+  60%{opacity:1;transform:scale(1.04) translateY(-4px)}
+  100%{transform:scale(1) translateY(0)}
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(16px) scale(.96)}
+  to{opacity:1;transform:none}
+}
+
+/* ---------- eggs ---------- */
+@keyframes eggIdle{
+  0%,100%{transform:rotate(-3deg) translateY(0) scale(1,1)}
+  25%{transform:rotate(3deg) translateY(-5px) scale(.98,1.03)}
+  50%{transform:rotate(-2deg) translateY(0) scale(1.02,.98)}
+  75%{transform:rotate(4deg) translateY(-3px) scale(.99,1.02)}
+}
+@keyframes yolkPulse{0%,100%{opacity:.75;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+@keyframes brandBob{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(6deg) translateY(-3px)}}
+
+/* ---------- gold ---------- */
+@keyframes goldGlow{
+  0%,100%{filter:brightness(1) saturate(1)}
+  50%{filter:brightness(1.35) saturate(1.4)}
+}
+@keyframes shineSweep{
+  0%,72%{left:-45%}
+  100%{left:115%}
+}
+
+/* ---------- currency ---------- */
+@keyframes purseBump{
+  0%{transform:scale(1)}
+  35%{transform:scale(1.16);border-color:var(--coin)}
+  100%{transform:scale(1)}
+}
+@keyframes coinFly{
+  0%{transform:translate(0,0) scale(.6);opacity:0}
+  15%{opacity:1;transform:translate(0,-10px) scale(1)}
+  100%{transform:translate(var(--dx,0),var(--dy,-90px)) scale(.4);opacity:0}
+}
+
+/* ---------- hud ---------- */
+@keyframes chipFlash{
+  0%{transform:scale(1);border-color:var(--line)}
+  40%{transform:scale(1.09);border-color:var(--yolk);box-shadow:0 0 16px rgba(255,201,60,.4)}
+  100%{transform:scale(1);border-color:var(--line)}
+}
+@keyframes comboBump{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.07) rotate(-1deg)}
+  100%{transform:scale(1)}
+}
+@keyframes slideInRight{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes boostFlash{
+  0%,100%{border-color:var(--line)}
+  50%{border-color:var(--bad);background:rgba(60,16,24,.75)}
+}
+
+/* ---------- shop feedback ---------- */
+@keyframes buyFlash{
+  0%{box-shadow:0 0 0 0 rgba(92,224,138,.7)}
+  60%{box-shadow:0 0 0 14px rgba(92,224,138,0)}
+  100%{box-shadow:0 0 0 0 rgba(92,224,138,0)}
+}
+@keyframes deniedShake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-7px)}
+  40%{transform:translateX(6px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(3px)}
+}
+@keyframes unlockGlow{
+  0%{filter:brightness(1)}
+  25%{filter:brightness(2.2) saturate(1.6)}
+  100%{filter:brightness(1)}
+}
+@keyframes levelUpPop{
+  0%{transform:scale(1)}
+  35%{transform:scale(1.35)}
+  100%{transform:scale(1)}
+}
+@keyframes equipSpin{
+  from{transform:rotateY(0)}
+  to{transform:rotateY(360deg)}
+}
+@keyframes buyCoin{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--bx),var(--by)) scale(.3);opacity:0}
+}
+
+/* ---------- toasts ---------- */
+#toasts{
+  position:fixed;left:50%;top:74px;transform:translateX(-50%);
+  z-index:70;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;
+}
+.toast{
+  background:rgba(20,15,32,.94);border:1px solid var(--line);
+  border-left:4px solid var(--yolk);
+  border-radius:12px;padding:10px 18px;font-size:12.5px;font-weight:700;letter-spacing:.4px;
+  box-shadow:0 10px 26px rgba(0,0,0,.5);backdrop-filter:blur(6px);
+  animation:toastIn .32s cubic-bezier(.2,.9,.3,1.5), toastOut .35s ease 2.1s forwards;
+  display:flex;align-items:center;gap:9px;max-width:88vw;
+}
+.toast.good{border-left-color:var(--good)}
+.toast.bad{border-left-color:var(--bad)}
+.toast.shard{border-left-color:var(--shard)}
+.toast.gold{border-left-color:var(--coin);color:var(--coin)}
+.toast.out{animation:toastOut .3s ease forwards}
+@keyframes toastIn{
+  from{opacity:0;transform:translateY(-18px) scale(.9)}
+  to{opacity:1;transform:none}
+}
+@keyframes toastOut{
+  to{opacity:0;transform:translateY(-12px) scale(.95)}
+}
+
+/* ---------- global screen flash / shake ---------- */
+#fxLayer{position:fixed;inset:0;z-index:65;pointer-events:none;overflow:hidden}
+.flash{position:absolute;inset:0;opacity:0;mix-blend-mode:screen}
+.flash.hit{animation:flashHit .3s ease}
+.flash.crit{background:radial-gradient(circle at 50% 55%,rgba(255,255,255,.85),rgba(255,120,180,.35) 45%,transparent 70%);animation:flashCrit .42s ease}
+.flash.gold{background:radial-gradient(circle at 50% 50%,rgba(255,230,150,.8),transparent 65%);animation:flashCrit .6s ease}
+@keyframes flashHit{0%{opacity:.5}100%{opacity:0}}
+@keyframes flashCrit{0%{opacity:.85}100%{opacity:0}}
+
+.shake{position:fixed;inset:0;z-index:64;pointer-events:none}
+@keyframes shakeIt{
+  0%{transform:translate(0,0)}
+  20%{transform:translate(-9px,6px)}
+  40%{transform:translate(8px,-5px)}
+  60%{transform:translate(-6px,-4px)}
+  80%{transform:translate(4px,5px)}
+  100%{transform:translate(0,0)}
+}
+
+.zoom{position:fixed;inset:0;z-index:63;pointer-events:none;animation:zoomPulse .3s ease}
+@keyframes zoomPulse{0%{transform:scale(1)}45%{transform:scale(1.012)}100%{transform:scale(1)}}
+
+/* ---------- DOM particle helpers ---------- */
+.confetti{
+  position:absolute;width:9px;height:14px;border-radius:2px;
+  animation:confettiFall linear forwards;
+}
+@keyframes confettiFall{
+  0%{opacity:1;transform:translate(0,0) rotate(0)}
+  100%{opacity:0;transform:translate(var(--cx,0),105vh) rotate(var(--cr,720deg))}
+}
+.spark{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  animation:sparkOut .7s ease-out forwards;
+}
+@keyframes sparkOut{
+  0%{opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.2)}
+}
+
+/* ---------- accessibility ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
