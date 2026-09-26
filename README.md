@@ -117,21 +117,6 @@ The port forward means the game is reachable from the public internet. All game
 state lives in `localStorage` on the visitor's own device, so there is no
 server-side data to protect — the shop, records and shards are all client-side.
 
-To add the game to the Pi's "Samsites" landing page:
-
-```bash
-scp tools/patch_samsites.py samuels-raspi:~
-ssh -t samuels-raspi 'sudo python3 ~/patch_samsites.py'
-```
-
-The patch is idempotent and keeps a `.bak` of the original. It links the
-public HTTPS URL, and if an earlier version of the page linked a different URL
-(e.g. a bare LAN IP) it rewrites just the URL, leaving the rest of the line
-untouched.
-
-**The one gotcha:** ES modules require a correct JavaScript MIME type. If a server
-returns `.js` as `text/plain`, the browser refuses with *"Failed to load module
-script"*, the page renders but nothing runs. `deploy.sh` checks this.
 
 ## Notes
 
